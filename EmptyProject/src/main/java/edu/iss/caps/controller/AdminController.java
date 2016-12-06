@@ -1,5 +1,7 @@
 package edu.iss.caps.controller;
 
+import java.util.Locale;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,9 +14,10 @@ import org.springframework.web.servlet.ModelAndView;
 public class AdminController
 {
 
-	@RequestMapping(value = "/home", method = RequestMethod.GET)
-	public String logic(Model model) {
-		//model.addAttribute("user", null);
-		return "home";
+	@RequestMapping(value = "/", method = RequestMethod.GET)
+	public String manage(Locale locale, Model model)
+	{
+
+		return "manage";
 	}
 }
