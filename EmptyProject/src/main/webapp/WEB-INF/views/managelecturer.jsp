@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -18,10 +21,12 @@
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 <!--  additional custom styles -->
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/mystyle.css">
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/resources/mystyle.css">
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<link href="${pageContext.request.contextPath}/resources/dashboard.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath}/resources/dashboard.css"
+	rel="stylesheet">
 
 </head>
 <body>
@@ -93,8 +98,17 @@
 								<input type="text" id="inputPK" class="form-control"
 									placeholder="Search for something here">
 							</div>
-							<div class="col xs-6">
-								<button class="btn btn-success" style="float: left">Search</button>
+							<div class="container">
+								<div class="col xs-6">
+									<button class="btn btn-default" style="float: left">Search</button>
+								</div>
+								<div class="col xs-6"></div>
+							</div>
+							<div class="container">
+								<button class="btn btn-success" style="float: left">
+									<span class="glyphicon glyphicon-plus"></span><span>
+										Create</span>
+								</button>
 							</div>
 						</div>
 					</div>
@@ -111,77 +125,54 @@
 								</tr>
 							</thead>
 							<tbody>
-								<tr>
-									<td>1,001</td>
-									<td>Lorem</td>
-									<td>ipsum</td>
-									<td>Lorem</td>
-									<td><button class="btn btn-primary" onclick="EditRecord()">Edit</button>
-										<button class="btn btn-danger"
-											onclick="$('#deleteModal').modal('toggle');">Delete</button></td>
-								</tr>
-								<tr>
-									<td>1,002</td>
-									<td>amet</td>
-									<td>consectetur</td>
-									<td>adipiscing</td>
-									<td><button class="btn btn-primary" onclick="EditRecord()">Edit</button>
-										<button class="btn btn-danger"
-											onclick="$('#deleteModal').modal('toggle');">Delete</button></td>
-								</tr>
-								<tr>
-									<td>1,003</td>
-									<td>Integer</td>
-									<td>nec</td>
-									<td>odio</td>
-									<td><button class="btn btn-primary" onclick="EditRecord()">Edit</button>
-										<button class="btn btn-danger"
-											onclick="$('#deleteModal').modal('toggle');">Delete</button></td>
-								</tr>
-								<tr>
-									<td>1,003</td>
-									<td>libero</td>
-									<td>Sed</td>
-									<td>cursus</td>
-									<td><button class="btn btn-primary" onclick="EditRecord()">Edit</button>
-										<button class="btn btn-danger"
-											onclick="$('#deleteModal').modal('toggle');">Delete</button></td>
-								</tr>
+								<c:forEach var="object" items="${dataList}">
+									<tr class="listRecord">
+										<td>${object.lecturerId}</td>
+										<td>${object.firstName}</td>
+										<td>${object.lastName}</td>
+
+										<td><button class="btn btn-primary"
+												onclick="EditRecord('${object.lecturerId}')">Edit</button>
+											<button class="btn btn-danger"
+												onclick="DeleteRecord('${object.lecturerId}')">Delete</button></td>
+									</tr>
+								</c:forEach>
+
 							</tbody>
 						</table>
 					</div>
 				</div>
 				<div id="editcontent" style="display: none">
-					<form id="formEditRecord">
+					<form:form id="formEditRecord" modelAttribute="data">
 						<h2 class="form-signin-heading">Edit Record</h2>
 						<div style="width: 40%">
-							<label for="inputPK">Primary Key: </label> <input type="text"
-								id="inputPK" class="form-control"
-								placeholder="Autopopulated & disabled" required autofocus
-								readonly>
+							<label for="inputPK">Lecturer ID: </label> <input type="text"
+								id="inputPK" class="form-control" value="${data.lecturerId }"
+								required autofocus readonly>
 						</div>
 						<div style="width: 40%">
-							<label for="inputEmail">Some field 1: </label> <input type="text"
-								id="inputEmail" class="form-control"
-								placeholder="Some field 1 here" required autofocus>
+							<label for="inputEmail">First Name: </label> <input type="text"
+								id="inputEmail" class="form-control" placeholder="First Name"
+								value="${data.firstName }" required autofocus>
 						</div>
 						<div style="width: 40%">
-							<label for="inputEmail">Some field 2: </label> <input type="text"
-								id="inputEmail" class="form-control"
-								placeholder="Some field 2 here" required autofocus>
+							<label for="inputEmail">Last Name: </label> <input type="text"
+								id="inputEmail" class="form-control" placeholder="Last Name"
+								value="${data.lastName }" required autofocus>
 						</div>
 						<div style="width: 70%">
 							<label for="inputEmail">Some field 3: </label>
 							<textarea type="text" id="inputEmail" class="form-control"
 								placeholder="Some field 3 here" required autofocus></textarea>
 						</div>
-						<br> <br>
+						<br>
+						<br>
 						<!-- removed the type="submit" property for testing-->
 						<button class="btn btn-success " onclick="#">Update
 							Record</button>
 						<button class="btn btn-danger" onclick="BackToPrevious()">Cancel
 							and Return to Previous</button>
-					</form>
+					</form:form>
 				</div>
 			</div>
 		</div>
@@ -242,7 +233,7 @@
 					<h4 class="modal-title">Confirm Deletion</h4>
 				</div>
 				<div class="modal-body">
-					<p>This entry will be permanently deleted.</p>
+					<p>The selected entry will be permanently deleted.</p>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
@@ -267,15 +258,84 @@
 		$("#footer").load("${pageContext.request.contextPath}/resources/footer.html");
 	});
 
+
+	var url = window.location.search;
+
+	var qs = (function(a)
+	{
+		if (a == "")
+			return
+			{};
+		var b =
+		{};
+		for (var i = 0; i < a.length; ++i)
+		{
+			var p = a[i].split('=', 2);
+			if (p.length == 1)
+				b[p[0]] = "";
+			else
+				b[p[0]] = decodeURIComponent(p[1].replace(/\+/g, " "));
+		}
+		return b;
+	})(window.location.search.substr(1).split('&'));
+	
+
+	try
+	{
+		console.log(qs["userrole"]); // testing purposes
+		if (qs["userrole"] != "admin")
+		{
+			RedirectToLogin();
+		} else if (qs['manage'] == "student")
+		{
+			document.getElementById("sidebarStudent").className = "active";
+			document.getElementById("tableheader1").innerHTML = "Student ID";
+			document.getElementById("sectiontitle").innerHTML = "Manage Student Records";
+	
+		} else if (qs['manage'] == "lecturer")
+		{
+			document.getElementById("sidebarLecturer").className = "active";
+			document.getElementById("tableheader1").innerHTML = "Lecturer ID";
+			document.getElementById("sectiontitle").innerHTML = "Manage Lecturer Records";
+	
+		} else if (qs['manage'] == "course")
+		{
+			document.getElementById("sidebarCourse").className = "active";
+			document.getElementById("tableheader1").innerHTML = "Course ID";
+			document.getElementById("sectiontitle").innerHTML = "Manage Course Records";
+	
+		} else if (qs['manage'] == "enrolment")
+		{
+			document.getElementById("sidebarEnrolment").className = "active";
+			document.getElementById("tableheader1").innerHTML = "Enrolment ID";
+			document.getElementById("sectiontitle").innerHTML = "Manage Enrolment Records";
+	
+		} else
+		{
+			$('#redirectModal').modal('toggle');
+			window.setTimeout(function()
+			{
+				window.location = "adminmgt.jsp?manage=student&userrole="
+						+ qs['userrole'];
+			}, 3000);
+		}
+	}
+	catch (err)
+	{
+		console.log("no query string");
+		RedirectToLogin();
+	}
+	
+	
 	if (url.includes("id="))
 	{
 		document.getElementById("mainbody").style.display = "none";
 		document.getElementById("editcontent").style.display = "block";
 	}
 
-	function EditRecord() //Edit button
+	function EditRecord(id) //Edit button
 	{
-		window.location.href = window.location.href + '&id=';
+		window.location.href = window.location.href + '&id='+id;
 	}
 
 	function Manage(recordtype)
@@ -298,5 +358,11 @@
 			window.location = "login.jsp";
 		}, 3000);
 	}
+	
+	function DeleteRecord(id)
+	{
+		$('#deleteModal').modal('toggle');
+	}
+	
 </script>
 </html>

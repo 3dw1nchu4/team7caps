@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry excluding="edu/iss/caps/trash/Users.java|edu/iss/caps/service/|edu/iss/caps/trash/|edu/iss/caps/model/" kind="src" output="target/classes" path="src/main/java">
+	<classpathentry excluding="edu/iss/caps/trash/Users.java|edu/iss/caps/trash/|edu/iss/caps/model/Address.java|edu/iss/caps/model/Hero.java|edu/iss/caps/service/HeroService.java|edu/iss/caps/service/HeroServiceImpl.java|edu/iss/caps/repository/HeroRepository.java" kind="src" output="target/classes" path="src/main/java">
 		<attributes>
 			<attribute name="optional" value="true"/>
 			<attribute name="maven.pomderived" value="true"/>

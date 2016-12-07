@@ -11,12 +11,11 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import edu.iss.caps.model.Courses;
+import edu.iss.caps.model.Course;
 
 @Entity
-@Table(name = "LecturerDetails")
-
-public class LecturerDetails {
+@Table(name="LecturerDetails")
+public class LecturerDetail {
 
 	@Id
 	@Column(name = "LecturerId")
@@ -26,36 +25,42 @@ public class LecturerDetails {
 	private String firstName;
 	@Column(name = "LastName")
 	private String lastName;
-	
-	@OneToMany List<Courses> course = new ArrayList<Courses>();
-	
-	@OneToOne User user;
-	
-	public LecturerDetails(){
-		
+
+//	@OneToMany
+//	List<Courses> course = new ArrayList<Courses>();
+
+
+	public LecturerDetail() {
+
 	}
-	
-	public LecturerDetails(String lecturerId, String firstName, String lastName) {
+
+	public LecturerDetail(String lecturerId, String firstName, String lastName) {
 		super();
 		this.lecturerId = lecturerId;
 		this.firstName = firstName;
 		this.lastName = lastName;
 	}
+
 	public String getLecturerId() {
 		return lecturerId;
 	}
+
 	public void setLecturerId(String lecturerId) {
 		this.lecturerId = lecturerId;
 	}
+
 	public String getFirstName() {
 		return firstName;
 	}
+
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
 	}
+
 	public String getLastName() {
 		return lastName;
 	}
+
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
@@ -76,7 +81,7 @@ public class LecturerDetails {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		LecturerDetails other = (LecturerDetails) obj;
+		LecturerDetail other = (LecturerDetail) obj;
 		if (lecturerId == null) {
 			if (other.lecturerId != null)
 				return false;
@@ -84,6 +89,14 @@ public class LecturerDetails {
 			return false;
 		return true;
 	}
+
+	@Override
+	public String toString() {
+		return "LecturerDetails [lecturerId=" + lecturerId + ", firstName=" + firstName + ", lastName=" + lastName
+				+ ", ";
+	}
+
 	
 	
+
 }

@@ -1,22 +1,16 @@
 package edu.iss.caps.model;
 
 import java.sql.Date;
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
 @Table(name="StudentDetails")
-
-public class StudentDetails {
+public class StudentDetail {
 	
 	@Id
 	@Column(name = "StudentId")
@@ -26,29 +20,22 @@ public class StudentDetails {
 	private String firstName;
 	@Column(name = "LastName")
 	private String lastName;
-	@Column(name = "EnrollmentDate")
-	private Date enrollmentDate;
+	@Column(name = "EnrolmentDate")
+	private Date enrolmentDate;
 	
-	@OneToOne User user; 
-	
-	@OneToOne (mappedBy="studentDetails")
-	private StudentCourses studentCourses;
-	
-	public StudentDetails(){
+	public StudentDetail(){
 		
 	}
 
 	
 
-	public StudentDetails(String studentId, String firstName, String lastName, Date enrollmentDate, User user,
-			StudentCourses studentCourses) {
+	public StudentDetail(String studentId, String firstName, String lastName, Date enrollmentDate)
+	{
 		super();
 		this.studentId = studentId;
 		this.firstName = firstName;
 		this.lastName = lastName;
-		this.enrollmentDate = enrollmentDate;
-		this.user = user;
-		this.studentCourses = studentCourses;
+		this.enrolmentDate = enrolmentDate;
 	}
 
 
@@ -89,37 +76,13 @@ public class StudentDetails {
 
 
 	public Date getEnrollmentDate() {
-		return enrollmentDate;
+		return enrolmentDate;
 	}
 
 
 
 	public void setEnrollmentDate(Date enrollmentDate) {
-		this.enrollmentDate = enrollmentDate;
-	}
-
-
-
-	public User getUser() {
-		return user;
-	}
-
-
-
-	public void setUser(User user) {
-		this.user = user;
-	}
-
-
-
-	public StudentCourses getStudentCourses() {
-		return studentCourses;
-	}
-
-
-
-	public void setStudentCourses(StudentCourses studentCourses) {
-		this.studentCourses = studentCourses;
+		this.enrolmentDate = enrollmentDate;
 	}
 
 
@@ -140,13 +103,21 @@ public class StudentDetails {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		StudentDetails other = (StudentDetails) obj;
+		StudentDetail other = (StudentDetail) obj;
 		if (studentId == null) {
 			if (other.studentId != null)
 				return false;
 		} else if (!studentId.equals(other.studentId))
 			return false;
 		return true;
+	}
+
+
+
+	@Override
+	public String toString() {
+		return "StudentDetails [studentId=" + studentId + ", firstName=" + firstName + ", lastName=" + lastName
+				+ ", enrolmentDate=" + enrolmentDate + "]";
 	}
 	
 }
