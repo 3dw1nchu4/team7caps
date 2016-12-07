@@ -48,44 +48,8 @@
 			</div>
 			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 				<h1 class="page-header">Dashboard</h1>
-				<!-- 
-				<div class="row placeholders">
-					<div class="col-xs-6 col-sm-3 placeholder">
-						<img
-							src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw=="
-							width="200" height="200" class="img-responsive"
-							alt="Generic placeholder thumbnail">
-						<h4>Label</h4>
-						<span class="text-muted">Something else</span>
-					</div>
-					<div class="col-xs-6 col-sm-3 placeholder">
-						<img
-							src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw=="
-							width="200" height="200" class="img-responsive"
-							alt="Generic placeholder thumbnail">
-						<h4>Label</h4>
-						<span class="text-muted">Something else</span>
-					</div>
-					<div class="col-xs-6 col-sm-3 placeholder">
-						<img
-							src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw=="
-							width="200" height="200" class="img-responsive"
-							alt="Generic placeholder thumbnail">
-						<h4>Label</h4>
-						<span class="text-muted">Something else</span>
-					</div>
-					<div class="col-xs-6 col-sm-3 placeholder">
-						<img
-							src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw=="
-							width="200" height="200" class="img-responsive"
-							alt="Generic placeholder thumbnail">
-						<h4>Label</h4>
-						<span class="text-muted">Something else</span>
-					</div>
-				</div>
--->
-				<h2 class="sub-header" id="sectiontitle">Section title</h2>
 
+				<h2 class="sub-header" id="sectiontitle">Section title</h2>
 
 				<div id="mainbody" style="width: 100%">
 
@@ -105,9 +69,10 @@
 								<div class="col xs-6"></div>
 							</div>
 							<div class="container">
-								<button class="btn btn-success" style="float: left">
+								<button class="btn btn-success" style="float: left"
+									onclick="EditRecord('create')">
 									<span class="glyphicon glyphicon-plus"></span><span>
-										Create</span>
+										Creates</span>
 								</button>
 							</div>
 						</div>
@@ -143,36 +108,33 @@
 					</div>
 				</div>
 				<div id="editcontent" style="display: none">
-					<form:form id="formEditRecord" modelAttribute="data">
+					<form id="formEditRecord" method="get">
 						<h2 class="form-signin-heading">Edit Record</h2>
 						<div style="width: 40%">
-							<label for="inputPK">Lecturer ID: </label> <input type="text"
-								id="inputPK" class="form-control" value="${data.lecturerId }"
-								required autofocus readonly>
+							<label for="id">Lecturer ID: </label> 
+							<input type="text" id="id" name="id"
+								class="form-control" value="${data.lecturerId }"
+								placeholder="Unique ID" required autofocus>
 						</div>
 						<div style="width: 40%">
-							<label for="inputEmail">First Name: </label> <input type="text"
-								id="inputEmail" class="form-control" placeholder="First Name"
+							<label for="firstName">First Name: </label> 
+							<input type="text"
+								id="firstName" name="firstName" class="form-control" placeholder="First Name"
 								value="${data.firstName }" required autofocus>
 						</div>
 						<div style="width: 40%">
-							<label for="inputEmail">Last Name: </label> <input type="text"
-								id="inputEmail" class="form-control" placeholder="Last Name"
+							<label for="lastName">Last Name: </label> 
+							<input type="text"
+								id="lastName" name="lastname" class="form-control" placeholder="Last Name"
 								value="${data.lastName }" required autofocus>
 						</div>
-						<div style="width: 70%">
-							<label for="inputEmail">Some field 3: </label>
-							<textarea type="text" id="inputEmail" class="form-control"
-								placeholder="Some field 3 here" required autofocus></textarea>
-						</div>
-						<br>
-						<br>
+						<br> <br>
 						<!-- removed the type="submit" property for testing-->
-						<button class="btn btn-success " onclick="#">Update
-							Record</button>
+						<button id="submitbutton" class="btn btn-success" type="submit">Update
+							Records</button>
 						<button class="btn btn-danger" onclick="BackToPrevious()">Cancel
 							and Return to Previous</button>
-					</form:form>
+					</form>
 				</div>
 			</div>
 		</div>
@@ -282,11 +244,7 @@
 
 	try
 	{
-		console.log(qs["userrole"]); // testing purposes
-		if (qs["userrole"] != "admin")
-		{
-			RedirectToLogin();
-		} else if (qs['manage'] == "student")
+		if (qs['manage'] == "student")
 		{
 			document.getElementById("sidebarStudent").className = "active";
 			document.getElementById("tableheader1").innerHTML = "Student ID";
@@ -331,6 +289,17 @@
 	{
 		document.getElementById("mainbody").style.display = "none";
 		document.getElementById("editcontent").style.display = "block";
+		
+		if (qs['id'] !="create")
+		{
+			document.getElementById("id").readOnly = true;
+			document.getElementById("formEditRecord").action = "updateLecturer";
+			document.getElementById("submitbutton").innerHTML = "Update Record";
+		} else
+		{
+			document.getElementById("formEditRecord").action = "createLecturer";
+			document.getElementById("submitbutton").innerHTML = "Create New Record";
+		}
 	}
 
 	function EditRecord(id) //Edit button

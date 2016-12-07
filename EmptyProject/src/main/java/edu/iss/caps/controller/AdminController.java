@@ -37,7 +37,7 @@ public class AdminController
 		mav.addObject("dataList", cseList);
 		return mav;
 	}
-
+///////////////  ADMIN-LECTURER /////////////////////////
 	@RequestMapping(value = "/manage", params = "manage=lecturer", method = RequestMethod.GET)
 	public ModelAndView manage2(Locale locale, Model model, @RequestParam Map<String, String> requestParams)
 	{
@@ -56,7 +56,44 @@ public class AdminController
 			return mav;
 		}
 	}
+	//CREATE NEW
+	//Error - need to add User Service
+	@RequestMapping(value = "/createLecturer", method = RequestMethod.GET)
+	public ModelAndView createLecturer(Locale locale, Model model, @RequestParam Map<String, String> requestParams)
+	{
 
+			String id = requestParams.get("id");
+			String firstName = requestParams.get("firstName");
+			String lastName = requestParams.get("lastName");
+			
+			LecturerDetail lecturer = new LecturerDetail(id, firstName, lastName);
+			lecturerService.createLecturer(lecturer);
+			ModelAndView mav = new ModelAndView("managelecturer");
+			LecturerDetail lecturer1 = lecturerService.findLecturerById(id);
+			mav.addObject("data", lecturer1);
+			return mav;
+	}
+	//Update Existing
+	@RequestMapping(value = "/updateLecturer", method = RequestMethod.GET)
+	public String updateLecturer(Locale locale, Model model, @RequestParam Map<String, String> requestParams)
+	{
+
+		    
+			String id = requestParams.get("id");
+			String firstName = requestParams.get("firstName");
+			String lastName = requestParams.get("lastName");
+			
+			LecturerDetail lecturer = lecturerService.findLecturerById(id);
+			lecturer.setFirstName(firstName);
+			lecturer.setLastName(lastName);
+			
+			lecturerService.changeLecturer(lecturer);
+			
+
+			return "redirect:manage?manage=lecturer";
+	}
+	
+///////////////  ADMIN-COURSE /////////////////////////
 	@RequestMapping(value = "/manage", params = "manage=course", method = RequestMethod.GET)
 	public ModelAndView manage3(Locale locale, Model model)
 	{
